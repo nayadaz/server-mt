@@ -135,7 +135,7 @@ void *consumer(void *arg) {
 		/* TODO: Take the mutex */
 		pthread_mutex_lock (&lock);
 		/* TODO: Wait if there is no client to be served. */
-		pthread_cond_wait(&empty,&mutex;)
+		pthread_cond_wait(&fill,&mutex;)
 		/* TODO: Get the dispatch time */
 		dispatch = gettimeofday(&dispatch, NULL);
 		/* TODO: Set the ID of the the thread in charge */
@@ -158,7 +158,7 @@ void *consumer(void *arg) {
 		latencies_acc += (long)(req->dispatch - req->arrival);
 
 		/* TODO: Synchronize */
-
+		pthread_cond_signal(&empty,&mutex;)
 		/* TODO: Dispatch the request to the Request module */
 		requestHandle(useptr->fd, useptr->arrival, useptr->dispatch, mythread)
 
@@ -166,8 +166,8 @@ void *consumer(void *arg) {
 		printf("Avg. client latency: %.2f\n", (float)latencies_acc/(float)clients_treated);
 
 		/* TODO: Close connection with the client */
-		close(useptr->fd);
-		
+		close(useptr->fd);		
+
 		/* Release mutex in the end. */
 		pthread_mutex_lock (&lock);
 	}
@@ -228,9 +228,9 @@ int main(int argc, char *argv[])
 
 		/* Queue new request depending on scheduling algorithm */
 		if (alg == POLICY1) {
-			/* TODO: Queue request according to POLICY1 (FIFO or STACK) */
+			/* TODO: Queue request according to POLICY1 (FIFO) */
 		} else if(alg == POLICY2) {
-			/* TODO: Queue request according to POLICY2 (SFF or BFF) */
+			/* TODO: Queue request according to POLICY2 (SFF) */
 			/* HINT: 
 			   You can use requestFileSize() to check the size of the file requested.
 			   You can use qsort() with requestcmp() to sort the requests by size.
